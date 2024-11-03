@@ -29,14 +29,7 @@ Window::Window(const int& width, const int& height)
         std::cout << "Failed to initialize GLEW." << std::endl;
         exit(EXIT_FAILURE);
     }
-
     glfwSetWindowSizeCallback(window_, windowResizeCallback);
-    glfwSetCursorPosCallback(window_, mouseMoveCallback);
-
-    glfwSwapInterval(0);
-
-    glfwSetWindowSizeCallback(window_, windowResizeCallback);
-    glfwSetCursorPosCallback(window_, mouseMoveCallback);
 }
 
 Window::~Window()

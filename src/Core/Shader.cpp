@@ -4,8 +4,11 @@
 #include <iostream>
 
 
-Shader::Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
+Shader::Shader(const std::string& shader)
 {
+    const std::string& vertexShaderPath = "src/Shaders/" + shader + ".vert";
+    const std::string& fragmentShaderPath = "src/Shaders/" + shader + ".frag";
+
     unsigned int vShader = createShader(GL_VERTEX_SHADER, vertexShaderPath);
     unsigned int fShader = createShader(GL_FRAGMENT_SHADER, fragmentShaderPath);
     createProgram({ vShader, fShader });

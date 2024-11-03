@@ -1,7 +1,8 @@
 #include "Mesh.h"
 
-Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<Index>& indices, std::unique_ptr<Shader>&& shader)
-    : vertices_(vertices), indices_(indices), shader_(std::move(shader))
+Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<Index>& indices,
+    const std::string& shader)
+    : vertices_(vertices), indices_(indices), shader_(Shader(shader))
 {
     initBuffers();
 }
@@ -17,7 +18,7 @@ void Mesh::initBuffers()
 
     glBindVertexArray(vao_);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
     glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_);
@@ -30,11 +31,11 @@ void Mesh::initBuffers()
 
 void Mesh::draw(const Camera& camera)
 {
-    shader_->bind();
-    shader_->setMatrix4f("projectionMatrix", camera.getProjection());
-    shader_->setMatrix4f("viewMatrix", camera.getView());
+    shader_.bind();
+    shader_.setMatrix4f("projectionMatrix", camera.getProjection());
+    shader_.setMatrix4f("viewMatrix", camera.getView());
     glBindVertexArray(vao_);
     glDrawElements(GL_TRIANGLES, (int)indices_.size(), GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);
-    shader_->unbind();
+    shader_.unbind();
 }

@@ -1,27 +1,23 @@
 #include "Scene.h"
 #include "Core/Mesh.h"
 #include <memory>
-
+#include "Systems/ParticleSystem.h"
 Scene::Scene(const Window& window)
+    : m_particleSim(&m_particleSys)
 {
-    std::vector<Vertex> vertices = 
-    {
-        {{0.0f,  0.5f, -2.0f}},
-        {{-0.1f, -0.5f, -2.0f}},
-        {{0.1f, -0.5f, -2.0f}}
-    };
-
-    std::vector<Index> indices = { 0, 1, 2 };
-
-    std::unique_ptr<Mesh> triangle = std::make_unique<Mesh>(vertices, indices, std::make_unique<Shader>("src/Shaders/basic.vert", "src/Shaders/basic.frag"));
-    meshes_.emplace_back(std::move(triangle));
     camera_ = std::make_unique<Camera>(window);
 }
 
 void Scene::render()
 {
-    for (auto& mesh : meshes_)
+
+    m_particleSys.render(*camera_);
+    m_particleSim.step();
+
+    /*
+    for (auto& object: m_objects)
     {
-        mesh->draw(*camera_);
+        object->render(*camera_);
     }
+    */
 }

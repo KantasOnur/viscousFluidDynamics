@@ -12,11 +12,11 @@ private:
     void createProgram(const std::vector<unsigned int>& shaders);
     std::unordered_map<std::string, int> uniformToLocation_;
 public:
-    Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
+    Shader(const std::string& shader);
     ~Shader();
     void bind() const;
     void unbind() const;
-    void bindTexture() const;
+    //void bindTexture() const;
     GLint getUniformLocation(const std::string& name);
     void setMatrix4f(const std::string& name, const glm::mat4& val);
     void setVec3f(const std::string& name, const glm::vec3& val);

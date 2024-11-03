@@ -1,22 +1,21 @@
 #pragma once
-#include "Shader.h"
+#include "../Core/Shader.h"
 #include <glm/glm.hpp>
-#include "Camera.h"
+#include "../Core/Camera.h"
 #include <memory>
-struct Vertex
-{
-    glm::vec3 position;
-};
+
+using Vertex = glm::vec3;
 using Index = unsigned int;
 class Mesh
 {
-private:
+protected:
     std::vector<Vertex> vertices_;
     std::vector<Index> indices_;
-    std::unique_ptr<Shader> shader_;
+    Shader shader_;
     unsigned int vao_, vbo_, ibo_;
     void initBuffers();
 public:
-    Mesh(const std::vector<Vertex>& vertices_, const std::vector<Index>& indices_, std::unique_ptr<Shader>&& shader);
-    void draw(const Camera& camera);
+    Mesh(const std::vector<Vertex>& vertices_, const std::vector<Index>& indices_, 
+        const std::string& shader);
+    virtual void draw(const Camera& camera);
 };

@@ -135,6 +135,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Systems\ParticleSimulation.cpp" />
+    <ClCompile Include="src\Core\InstancedMesh.cpp" />
+    <ClCompile Include="src\Systems\ParticleSystem.cpp" />
+    <ClCompile Include="src\Systems\BaseSystem.cpp" />
     <ClCompile Include="src\Events\EventManager.cpp" />
     <ClCompile Include="src\Core\Camera.cpp" />
     <ClCompile Include="src\Core\Mesh.cpp" />
@@ -145,6 +149,11 @@
     <ClCompile Include="src\Core\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Systems\ParticleSimulation.h" />
+    <ClInclude Include="src\Core\InstancedMesh.h" />
+    <ClInclude Include="src\Systems\ParticleSystem.h" />
+    <ClInclude Include="src\Systems\BaseSystem.h" />
+    <ClInclude Include="src\Systems\BaseObject.h" />
     <ClInclude Include="src\Events\EventManager.h" />
     <ClInclude Include="src\Core\Camera.h" />
     <ClInclude Include="src\Core\Mesh.h" />
