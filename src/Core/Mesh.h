@@ -15,7 +15,9 @@ protected:
     unsigned int vao_, vbo_, ibo_;
     void initBuffers();
 public:
+    Mesh() = default;
     Mesh(const std::vector<Vertex>& vertices_, const std::vector<Index>& indices_, 
         const std::string& shader);
     virtual void draw(const Camera& camera);
+    Shader* getShader() { return &shader_; };
 };

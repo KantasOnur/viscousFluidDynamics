@@ -12,12 +12,7 @@ void Scene::render()
 {
 
     m_particleSys.render(*camera_);
+    m_particleSim.render(*camera_);
     m_particleSim.step();
 
-    /*
-    for (auto& object: m_objects)
-    {
-        object->render(*camera_);
-    }
-    */
 }

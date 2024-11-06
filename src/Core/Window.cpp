@@ -30,6 +30,7 @@ Window::Window(const int& width, const int& height)
         exit(EXIT_FAILURE);
     }
     glfwSetWindowSizeCallback(window_, windowResizeCallback);
+    glfwSetCursorPosCallback(window_, mouseMoveCallback);
 }
 
 Window::~Window()
@@ -72,5 +73,6 @@ void Window::windowResizeCallback(GLFWwindow* window, int width, int height)
 
 void Window::mouseMoveCallback(GLFWwindow* window, double xpos, double ypos)
 {
-
+    MouseMoveEvent e(xpos, ypos);
+    EventManager::getInstance().triggerEvent(e);
 }

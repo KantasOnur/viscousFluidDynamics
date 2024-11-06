@@ -51,6 +51,9 @@
     <ClCompile Include="src\Systems\ParticleSimulation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\SquareMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game.h">
@@ -95,9 +98,16 @@
     <ClInclude Include="src\Systems\ParticleSimulation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Core\SquareMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Shaders\basic.vert" />
     <None Include="src\Shaders\basic.frag" />
+    <None Include="src\Shaders\interactionRadius.vert" />
+    <None Include="src\Shaders\interactionRadius.frag" />
+    <None Include="src\Shaders\boundingBox.vert" />
+    <None Include="src\Shaders\boundingBox.frag" />
   </ItemGroup>
 </Project>
