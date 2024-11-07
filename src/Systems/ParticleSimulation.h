@@ -7,12 +7,12 @@ class ParticleSimulation : BaseObject
 private:
 	struct Params
 	{
-		glm::vec3 gravity = { 0.0f,-9.81f, 0.0f };
+		glm::vec3 gravity = { 0.0f, -9.81f, 0.0f };
 		float dt = 0.0001f;
-		float h = 1.0f;
-		float restDensity = 1.0f;
-		float k = 1.0f;
-		float nearK = 0.5f;
+		float h = 0.03f;
+		float restDensity = 100.0f;
+		float k = 4000.0f;
+		float nearK = 144.0f;
 	};
 
 	struct BoundingBox
@@ -21,7 +21,7 @@ private:
 		{						  // Vertices		// Bounding planes
 			{-0.4f,  0.4f, 0.0f}, // Top left		// Left plane
 			{-0.4f, -0.4f, 0.0f}, // Bottom left	// Bottom plane
-			{0.4f, 0.4f, 0.0f},	  // Top right	// Top plane
+			{0.4f, 0.4f, 0.0f},	  // Top right		// Top plane
 			{0.4f, -0.4f, 0.0f}   // Bottom right	// Right plane
 		};
 		glm::vec3 normals[4]

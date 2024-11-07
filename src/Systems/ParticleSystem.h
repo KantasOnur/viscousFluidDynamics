@@ -1,6 +1,6 @@
 #pragma once
 #include "BaseSystem.h"
-#define PARTICLE_COUNT 32
+#define PARTICLE_COUNT 1 << 8
 #include "../Core/InstancedMesh.h"
 
 
@@ -9,7 +9,7 @@ struct Particle
 	glm::vec3 position = glm::vec3(0.0, 0.0, 0.0);
 	glm::vec3 prev_position = glm::vec3(0.0f);
 	glm::vec3 velocity = glm::vec3(1.0f, 1.0f, 0.0f);
-	glm::vec3 acceleration = glm::vec3(0.0f);
+	glm::vec3 density = glm::vec3(0.0f);
 };
 
 class ParticleSystem : public BaseSystem
