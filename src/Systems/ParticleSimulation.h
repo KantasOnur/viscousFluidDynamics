@@ -8,21 +8,21 @@ private:
 	struct Params
 	{
 		glm::vec3 gravity = { 0.0f, -9.81f, 0.0f };
-		float dt = 0.0001f;
-		float h = 0.03f;
-		float restDensity = 100.0f;
-		float k = 4000.0f;
-		float nearK = 144.0f;
+		float dt = 0.01f;
+		float h = 0.65f;
+		float restDensity = 40.0f;
+		float k = 2.0f;
+		float nearK = 30.0f;
 	};
 
 	struct BoundingBox
 	{
 		glm::vec3 bounds[4] =
-		{						  // Vertices		// Bounding planes
-			{-0.4f,  0.4f, 0.0f}, // Top left		// Left plane
-			{-0.4f, -0.4f, 0.0f}, // Bottom left	// Bottom plane
-			{0.4f, 0.4f, 0.0f},	  // Top right		// Top plane
-			{0.4f, -0.4f, 0.0f}   // Bottom right	// Right plane
+		{														// Vertices		// Bounding planes
+			{-POSITION_RANGE,  POSITION_RANGE, -POSITION_RANGE}, // Top left		// Left plane
+			{-POSITION_RANGE, -POSITION_RANGE, -POSITION_RANGE}, // Bottom left	// Bottom plane
+			{POSITION_RANGE, POSITION_RANGE, -POSITION_RANGE},	  // Top right		// Top plane
+			{POSITION_RANGE, -POSITION_RANGE, -POSITION_RANGE}   // Bottom right	// Right plane
 		};
 		glm::vec3 normals[4]
 		{

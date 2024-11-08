@@ -17,8 +17,18 @@ mat4 translate(vec3 t)
    );
 }
 
+mat4 scale(float s)
+{
+    return mat4(
+        s, 0.0,     0.0,     0.0,
+        0.0, s, 0.0,     0.0,
+        0.0,     0.0,     s, 0.0,
+        0.0,     0.0,     0.0,     1.0
+    );
+}
 
 void main()
 {
-	gl_Position = projectionMatrix * viewMatrix * translate(instancePosition) * vec4(vertexPosition, 1.0);
+    mat4 model =  translate(instancePosition) * scale(5.0f);
+	gl_Position = projectionMatrix * viewMatrix * model * vec4(vertexPosition, 1.0);
 }
