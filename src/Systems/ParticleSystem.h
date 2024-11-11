@@ -1,16 +1,16 @@
 #pragma once
 #include "BaseSystem.h"
-#define PARTICLE_COUNT 1 << 10
+#define PARTICLE_COUNT 1 << 15
 #define POSITION_RANGE 10.0f
 #include "../Core/InstancedMesh.h"
-
+#include "../Core/OpenGLBuffer.h"
 
 struct Particle
 {
-	glm::vec3 position = glm::vec3(0.0, 0.0, 0.0);
-	glm::vec3 prev_position = glm::vec3(0.0f);
-	glm::vec3 velocity = glm::vec3(0.0f);
-	glm::vec3 density = glm::vec3(0.0f);
+	glm::vec4 position = glm::vec4(0.0f);
+	glm::vec4 prev_position = glm::vec4(0.0f);
+	glm::vec4 velocity = glm::vec4(0.0f);
+	glm::vec4 density = glm::vec4(0.0f);
 };
 
 class ParticleSystem : public BaseSystem
@@ -18,7 +18,8 @@ class ParticleSystem : public BaseSystem
 	friend class ParticleSimulation;
 
 private:
-	Particle m_particles[PARTICLE_COUNT];
+	//Particle m_particles[PARTICLE_COUNT];
+	OpenGLBuffer<Particle> m_particles;
 
 	std::vector<Vertex> m_vertices =
 	{

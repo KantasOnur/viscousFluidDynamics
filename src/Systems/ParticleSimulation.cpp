@@ -2,13 +2,13 @@
 #include <iostream>
 
 ParticleSimulation::ParticleSimulation(ParticleSystem* target)
-	: m_target(target) 
+	: m_target(target), m_applyGravity("applyGravity")
 {
-	
 }
 
 void ParticleSimulation::step()
 {
+	/*
 	auto& particles = m_target->m_particles;
 	for (auto& particle : particles)
 	{
@@ -29,6 +29,11 @@ void ParticleSimulation::step()
 		particle.velocity = (particle.position - particle.prev_position) / sim.dt;
 	}
 	m_target->update();
+	*/
+
+	int blockSize;
+	glGetIntegerv(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, &blockSize);
+	m_applyGravity.dispatch((blockSize + PARTICLE_COUNT - 1) / blockSize, 1, 1);
 }
 
 
@@ -39,9 +44,11 @@ void ParticleSimulation::render(const Camera& camera)
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
+
 void ParticleSimulation::doubleDensityRelaxation(Particle* particles)
 {
 
+	/*
 	std::vector<glm::vec3> position_updated(PARTICLE_COUNT);
 
 	float particleDistance;
@@ -103,10 +110,11 @@ void ParticleSimulation::doubleDensityRelaxation(Particle* particles)
 	{
 		particles[i].position = position_updated[i];
 	}
-	
+	*/
 }
 void ParticleSimulation::resolveCollisions(Particle* particles)
 {
+	/*
 	for (int i = 0; i < PARTICLE_COUNT; ++i)
 	{
 		Particle& p = particles[i];
@@ -122,4 +130,5 @@ void ParticleSimulation::resolveCollisions(Particle* particles)
 			}
 		}
 	}
+	*/
 }

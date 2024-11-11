@@ -7,6 +7,13 @@ Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<Index>& indice
     initBuffers();
 }
 
+Mesh::~Mesh()
+{
+    glDeleteVertexArrays(1, &vao_);
+    glDeleteBuffers(1, &vbo_);
+    glDeleteBuffers(1, &ibo_);
+}
+
 void Mesh::initBuffers()
 {
     glGenVertexArrays(1, &vao_);

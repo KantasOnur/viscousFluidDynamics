@@ -3,6 +3,7 @@
 #include "../Events/EventManager.h"
 
 #include <iostream>
+
 int Window::width_;
 int Window::height_;
 
@@ -18,7 +19,7 @@ Window::Window(const int& width, const int& height)
     }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     window_ = glfwCreateWindow(width_, height_, "Game", nullptr, nullptr);
@@ -31,6 +32,16 @@ Window::Window(const int& width, const int& height)
     }
     glfwSetWindowSizeCallback(window_, windowResizeCallback);
     glfwSetCursorPosCallback(window_, mouseMoveCallback);
+
+    const GLubyte* vendor = glGetString(GL_VENDOR);
+    const GLubyte* renderer = glGetString(GL_RENDERER);
+    const GLubyte* version = glGetString(GL_VERSION);
+
+    std::cout << "GPU Vendor: " << vendor << std::endl;
+    std::cout << "Renderer: " << renderer << std::endl;
+    std::cout << "OpenGL Version: " << version << std::endl;
+
+    glfwSwapInterval(1); // set vsync
 }
 
 Window::~Window()

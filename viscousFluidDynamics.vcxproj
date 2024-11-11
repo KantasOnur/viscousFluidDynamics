@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Core\ComputeShader.cpp" />
     <ClCompile Include="src\Core\SquareMesh.cpp" />
     <ClCompile Include="src\Systems\ParticleSimulation.cpp" />
     <ClCompile Include="src\Core\InstancedMesh.cpp" />
@@ -150,6 +151,8 @@
     <ClCompile Include="src\Core\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core\ComputeShader.h" />
+    <ClInclude Include="src\Core\OpenGLBuffer.h" />
     <ClInclude Include="src\Core\SquareMesh.h" />
     <ClInclude Include="src\Systems\ParticleSimulation.h" />
     <ClInclude Include="src\Core\InstancedMesh.h" />
@@ -171,6 +174,7 @@
     <None Include="src\Shaders\basic.vert" />
     <None Include="src\Shaders\boundingBox.frag" />
     <None Include="src\Shaders\boundingBox.vert" />
+    <None Include="src\Shaders\Compute\applyGravity.comp" />
     <None Include="src\Shaders\interactionRadius.frag" />
     <None Include="src\Shaders\interactionRadius.vert" />
   </ItemGroup>

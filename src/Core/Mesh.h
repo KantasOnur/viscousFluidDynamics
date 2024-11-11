@@ -18,6 +18,7 @@ public:
     Mesh() = default;
     Mesh(const std::vector<Vertex>& vertices_, const std::vector<Index>& indices_, 
         const std::string& shader);
+    ~Mesh();
     virtual void draw(const Camera& camera);
     Shader* getShader() { return &shader_; };
 };

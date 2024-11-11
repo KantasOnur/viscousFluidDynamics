@@ -6,7 +6,6 @@ InstancedMesh::InstancedMesh(const std::vector<Vertex>& vertices, const std::vec
 	: Mesh(vertices, indices, shader), m_count(count)
 { }
 
-/* using old code, idgaf if its bad or ugly. YOURE UGLY BITCVH! */
 void InstancedMesh::linkAttribs(const void* instancedObjects)
 {
     const Particle* p = static_cast<const Particle*>(instancedObjects);

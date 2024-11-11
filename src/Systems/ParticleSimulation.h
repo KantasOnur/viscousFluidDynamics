@@ -1,6 +1,7 @@
 #pragma once
 #include "ParticleSystem.h"
 #include "../Core/SquareMesh.h"
+#include "../Core/ComputeShader.h"
 
 class ParticleSimulation : BaseObject
 {
@@ -38,6 +39,7 @@ private:
 	Params sim;
 	BoundingBox m_box;
 
+	ComputeShader m_applyGravity;
 private:
 	void resolveCollisions(Particle* particles);
 	void doubleDensityRelaxation(Particle* particles);

@@ -7,16 +7,24 @@ std::mt19937 gen(rd());
 std::uniform_real_distribution<float> position_dist(-POSITION_RANGE + 2.0f, POSITION_RANGE - 2.0f);
 std::uniform_real_distribution<float> velocity_dist(-1, 1);
 
-ParticleSystem::ParticleSystem()
+static std::vector<Particle> generateParticles()
 {
+	std::vector<Particle> particles(PARTICLE_COUNT);
 	for (int i = 0; i < PARTICLE_COUNT; ++i)
 	{
-		m_particles[i].position = glm::vec3(position_dist(gen), position_dist(gen), -POSITION_RANGE);
-		m_particles[i].prev_position = m_particles[i].position;
+		particles[i].position = glm::vec4(position_dist(gen), position_dist(gen), -POSITION_RANGE, 0.0f);
+		particles[i].prev_position = particles[i].position;
 		//m_particles[i].velocity = glm::vec3(velocity_dist(gen), velocity_dist(gen), 0.0f);
 	}
+	return particles;
+}
 
-	m_mesh.linkAttribs(m_particles);
+ParticleSystem::ParticleSystem()
+	: m_particles(GL_SHADER_STORAGE_BUFFER, generateParticles().data(), PARTICLE_COUNT, GL_DYNAMIC_COPY)
+{
+	
+	m_particles.sendToGpu(0);
+	//m_mesh.linkAttribs(m_particles);
 }
 
 void ParticleSystem::render(const Camera& camera)
@@ -26,5 +34,5 @@ void ParticleSystem::render(const Camera& camera)
 
 void ParticleSystem::update()
 {
-	m_mesh.updateBuffer(m_particles);
+	//m_mesh.updateBuffer(m_particles);
 }
