@@ -2,12 +2,20 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
+#include <regex>
 
-
-Shader::Shader(const std::string& shader)
+Shader::Shader(const std::string& shader, const bool& compute)
 {
-    const std::string& vertexShaderPath = "src/Shaders/" + shader + ".vert";
-    const std::string& fragmentShaderPath = "src/Shaders/" + shader + ".frag";
+    if (compute)
+    {
+        const std::string computeShaderPath = "src/Shaders/Compute/" + shader + ".comp";
+        unsigned int cShader = createShader(GL_COMPUTE_SHADER, computeShaderPath);
+        createProgram({ cShader });
+        return;
+    }
+
+    const std::string vertexShaderPath = "src/Shaders/" + shader + ".vert";
+    const std::string fragmentShaderPath = "src/Shaders/" + shader + ".frag";
 
     unsigned int vShader = createShader(GL_VERTEX_SHADER, vertexShaderPath);
     unsigned int fShader = createShader(GL_FRAGMENT_SHADER, fragmentShaderPath);
@@ -19,7 +27,7 @@ Shader::~Shader()
     glDeleteProgram(id_);
 }
 
-unsigned int Shader::createShader(GLenum type, const std::string& sourcePath)
+static std::string processShaderFile(const std::string& sourcePath)
 {
     std::ifstream stream(sourcePath);
     std::string source;
@@ -36,6 +44,20 @@ unsigned int Shader::createShader(GLenum type, const std::string& sourcePath)
         std::cout << "Failed to read shader at: " << sourcePath << std::endl;
         exit(EXIT_FAILURE);
     }
+    std::regex includeRegex("(#include <([a-zA-Z]+)>\n)");
+    for (std::smatch sm; std::regex_search(source, sm, includeRegex);)
+    {
+        std::string includeFileSourcePath = "src/Shaders/include/" + sm[2].str() + ".glsl";
+        std::string includeFileSource = processShaderFile(includeFileSourcePath);
+        source.replace(sm.position(0), sm.length(0), includeFileSource);
+    }
+    return source;
+}
+
+unsigned int Shader::createShader(GLenum type, const std::string& sourcePath)
+{
+    std::string source = processShaderFile(sourcePath);
+
 
     unsigned int shader = glCreateShader(type);
     const char* src = source.c_str();
@@ -108,6 +130,7 @@ void Shader::setVec3f(const std::string& name, const glm::vec3& val)
 }
 
 
+
 void Shader::setFloat1f(const std::string& name, const float& val)
 {
     glUniform1f(getUniformLocation(name), val);
@@ -117,4 +140,3 @@ void Shader::setInt(const std::string& name, const int& val)
 {
     glUniform1i(getUniformLocation(name), val);
 }
-

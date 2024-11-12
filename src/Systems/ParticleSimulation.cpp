@@ -2,8 +2,15 @@
 #include <iostream>
 
 ParticleSimulation::ParticleSimulation(ParticleSystem* target)
-	: m_target(target), m_applyGravity("applyGravity")
+	: m_target(target), 
+	m_applyGravity("applyGravity"),
+	m_updateVelocity("updateVelocity"),
+	m_doubleDensityRelaxation("doubleDensityRelaxation"),
+	m_boxUniform(GL_UNIFORM_BUFFER, &m_box, 1, GL_DYNAMIC_DRAW),
+	m_paramUniform(GL_UNIFORM_BUFFER, &sim, 1, GL_DYNAMIC_DRAW)
 {
+	m_boxUniform.sendToGpu(1);
+	m_paramUniform.sendToGpu(2);
 }
 
 void ParticleSimulation::step()
@@ -33,7 +40,10 @@ void ParticleSimulation::step()
 
 	int blockSize;
 	glGetIntegerv(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, &blockSize);
-	m_applyGravity.dispatch((blockSize + PARTICLE_COUNT - 1) / blockSize, 1, 1);
+	size_t numBlocks = (blockSize + PARTICLE_COUNT - 1) / blockSize;
+	m_applyGravity.dispatch(numBlocks, 1, 1);
+	m_doubleDensityRelaxation.dispatch(numBlocks, 1, 1);
+	m_updateVelocity.dispatch(numBlocks, 1, 1);
 }
 
 

@@ -30,16 +30,8 @@ public:
 		glDeleteBuffers(1, &m_id);
 	}
 	unsigned int getId() const override { return m_id; };
-	void sendToGpu(const size_t& index, const std::string& unifromName = "")
+	void sendToGpu(const size_t& index)
 	{
-		if (m_type == GL_UNIFORM_BUFFER)
-		{
-			assert(uniformName != unifromName);
-			GLuint blockIndex = glGetUniformBlockIndex(m_id, "Matrices");
-			glUniformBlockBinding(m_id, blockIndex, index);
-			glBindBufferBase(GL_UNIFORM_BUFFER, index, m_id);
-			return;
-		}
 		glBindBufferBase(m_type, index, m_id);
 	}
 	void retrieveBuffer(const size_t& offset, const size_t& n, T* data) const

@@ -6,13 +6,14 @@
 
 class Shader
 {
-private:
+protected:
     unsigned int id_;
+private:
     unsigned int createShader(GLenum type, const std::string& sourcePath);
     void createProgram(const std::vector<unsigned int>& shaders);
     std::unordered_map<std::string, int> uniformToLocation_;
 public:
-    Shader(const std::string& shader);
+    Shader(const std::string& shader, const bool& compute = false);
     ~Shader();
     void bind() const;
     void unbind() const;

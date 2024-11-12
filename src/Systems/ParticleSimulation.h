@@ -2,35 +2,37 @@
 #include "ParticleSystem.h"
 #include "../Core/SquareMesh.h"
 #include "../Core/ComputeShader.h"
+#include "../Core/OpenGLBuffer.h"
 
 class ParticleSimulation : BaseObject
 {
 private:
 	struct Params
 	{
-		glm::vec3 gravity = { 0.0f, -9.81f, 0.0f };
-		float dt = 0.01f;
-		float h = 0.65f;
-		float restDensity = 40.0f;
-		float k = 2.0f;
-		float nearK = 30.0f;
+		glm::vec4 gravity = { 0.0f, -20.81f, 0.0f, 0.0f };
+		float dt = 0.005f;
+		float h = 0.35f;
+		float restDensity = 10.0f;
+		float k = 6.0f;
+		float nearK =  10.0f;
+		int particleCount = PARTICLE_COUNT;
 	};
 
 	struct BoundingBox
 	{
-		glm::vec3 bounds[4] =
-		{														// Vertices		// Bounding planes
-			{-POSITION_RANGE,  POSITION_RANGE, -POSITION_RANGE}, // Top left		// Left plane
-			{-POSITION_RANGE, -POSITION_RANGE, -POSITION_RANGE}, // Bottom left	// Bottom plane
-			{POSITION_RANGE, POSITION_RANGE, -POSITION_RANGE},	  // Top right		// Top plane
-			{POSITION_RANGE, -POSITION_RANGE, -POSITION_RANGE}   // Bottom right	// Right plane
+		glm::vec4 bounds[4] =
+		{																// Vertices		// Bounding planes
+			{-POSITION_RANGE,  POSITION_RANGE, -POSITION_RANGE, 0.0f},	// Top left		// Left plane
+			{-POSITION_RANGE, -POSITION_RANGE, -POSITION_RANGE, 0.0f},	// Bottom left	// Bottom plane
+			{POSITION_RANGE, POSITION_RANGE, -POSITION_RANGE, 0.0f},	// Top right	// Top plane
+			{POSITION_RANGE, -POSITION_RANGE, -POSITION_RANGE, 0.0f}	// Bottom right	// Right plane
 		};
-		glm::vec3 normals[4]
+		glm::vec4 normals[4]
 		{
-			{1.0f, 0.0f, 0.0f},
-			{0.0f, 1.0f, 0.0f},
-			{0.0f, -1.0f, 0.0f},
-			{-1.0f, 0.0f, 0.0f}
+			{1.0f, 0.0f, 0.0f, 0.0f},
+			{0.0f, 1.0f, 0.0f, 0.0f},
+			{0.0f, -1.0f, 0.0f, 0.0f},
+			{-1.0f, 0.0f, 0.0f, 0.0f}
 		};
 	};
 private:
@@ -40,6 +42,11 @@ private:
 	BoundingBox m_box;
 
 	ComputeShader m_applyGravity;
+	ComputeShader m_updateVelocity;
+	ComputeShader m_doubleDensityRelaxation;
+
+	OpenGLBuffer<BoundingBox> m_boxUniform;
+	OpenGLBuffer<Params> m_paramUniform;
 private:
 	void resolveCollisions(Particle* particles);
 	void doubleDensityRelaxation(Particle* particles);
