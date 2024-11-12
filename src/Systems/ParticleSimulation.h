@@ -9,12 +9,12 @@ class ParticleSimulation : BaseObject
 private:
 	struct Params
 	{
-		glm::vec4 gravity = { 0.0f, -20.81f, 0.0f, 0.0f };
+		glm::vec4 gravity = { 0.0f, -9.81f, 0.0f, 0.0f };
 		float dt = 0.005f;
-		float h = 0.35f;
-		float restDensity = 10.0f;
-		float k = 6.0f;
-		float nearK =  10.0f;
+		float h = 0.55f;
+		float restDensity = 40.0f;
+		float k = 3.0f;
+		float nearK = 7.0f;
 		int particleCount = PARTICLE_COUNT;
 	};
 

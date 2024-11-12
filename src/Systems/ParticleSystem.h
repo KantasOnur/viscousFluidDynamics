@@ -1,6 +1,6 @@
 #pragma once
 #include "BaseSystem.h"
-#define PARTICLE_COUNT 16384
+#define PARTICLE_COUNT 32768
 #define POSITION_RANGE 10.0f
 #include "../Core/InstancedMesh.h"
 #include "../Core/OpenGLBuffer.h"

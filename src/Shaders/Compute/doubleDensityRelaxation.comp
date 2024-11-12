@@ -9,11 +9,15 @@ void doubleDensityRelaxation(inout Particle p)
     float density_near = 0.0f;
     for (int j = 0; j < sim.particleCount; j++)
     {
-        float weightedContribution = distance(p.position, particles[j].position) / sim.h;
-        if(weightedContribution > 0.0f && weightedContribution < 1.0f)
+        if(gl_GlobalInvocationID.x != j)
         {
-            density += pow(1 - weightedContribution, 2.0f);
-            density_near += pow(1 - weightedContribution, 3.0f);
+            float weightedContribution = distance(p.position, particles[j].position) / sim.h;
+            if(weightedContribution < 1.0f)
+            {
+                density += pow(1 - weightedContribution, 2.0f);
+                density_near += pow(1 - weightedContribution, 3.0f);
+            }
+            
         }
     }
 
@@ -24,14 +28,17 @@ void doubleDensityRelaxation(inout Particle p)
 
     for (int j = 0; j < sim.particleCount; j++)
     {
-        float weightedContribution = distance(p.position, particles[j].position) / sim.h;
-        if(weightedContribution > 0.0f && weightedContribution < 1.0f)
+        if(gl_GlobalInvocationID.x != j)
         {
-            displacement = pow(sim.dt, 2.0f) *
-					    (pressure * (1 - weightedContribution) + pressure_near * pow(1 - weightedContribution, 2.0f)) * 
-                        normalize(particles[j].position - p.position);
+            float weightedContribution = distance(p.position, particles[j].position) / sim.h;
+            if(weightedContribution < 1.0f)
+            {
+                displacement = pow(sim.dt, 2.0f) *
+					        (pressure * (1 - weightedContribution) + pressure_near * pow(1 - weightedContribution, 2.0f)) * 
+                            normalize(particles[j].position - p.position);
 
-            dx += -0.5f * displacement;
+                dx += -0.5f * displacement;
+            }   
         }
     }
     p.next_position = p.position + dx;
