@@ -3,6 +3,18 @@
 
 layout (local_size_x = 1024, local_size_y = 1, local_size_z = 1) in;
 
+void calculateCellID(inout Particle p)
+{
+    float spacing = 2 * sim.h;
+
+    int n_y = int(ceil(sim.boxHeight / spacing));
+    int x = int(floor(p.position.x / spacing));
+    int y = int(floor(p.position.y / spacing));
+
+    int i = int(y * n_y + x);
+
+    cellIDs[gl_GlobalInvocationID.x] = i;
+}
 
 void main()
 {
@@ -21,9 +33,9 @@ void main()
 
         // Move to predicted position
         p.prev_position = p.position;
-        p.position += p.velocity * sim.dt;
+        //p.position += p.velocity * sim.dt;
 
-
+        calculateCellID(p);
         particles[gl_GlobalInvocationID.x] = p;
     }
 }

@@ -22,6 +22,7 @@ struct Params
     float k;
     float nearK;
     int particleCount;
+    int boxHeight;
 };
 
 layout(std430, binding = 0) buffer ParticleBuffer {
@@ -36,4 +37,9 @@ layout(std140, binding = 1) uniform BoxUniform
 layout(std140, binding = 2) uniform ParamsUniform
 {
     Params sim;
+};
+
+layout(std430, binding = 3) buffer CellBuffer
+{
+    int cellIDs[];
 };

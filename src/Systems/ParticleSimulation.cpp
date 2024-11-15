@@ -1,4 +1,6 @@
 #include "ParticleSimulation.h"
+#include "../Events/EventManager.h"
+
 #include <iostream>
 
 ParticleSimulation::ParticleSimulation(ParticleSystem* target)
@@ -7,43 +9,23 @@ ParticleSimulation::ParticleSimulation(ParticleSystem* target)
 	m_updateVelocity("updateVelocity"),
 	m_doubleDensityRelaxation("doubleDensityRelaxation"),
 	m_boxUniform(GL_UNIFORM_BUFFER, &m_box, 1, GL_DYNAMIC_DRAW),
-	m_paramUniform(GL_UNIFORM_BUFFER, &sim, 1, GL_DYNAMIC_DRAW)
+	m_paramUniform(GL_UNIFORM_BUFFER, &sim, 1, GL_DYNAMIC_DRAW),
+	m_cellIDs(GL_SHADER_STORAGE_BUFFER, std::vector<int>(PARTICLE_COUNT).data(), PARTICLE_COUNT, GL_DYNAMIC_COPY)
 {
 	m_boxUniform.sendToGpu(1);
 	m_paramUniform.sendToGpu(2);
+	m_cellIDs.sendToGpu(3);
 }
 
 void ParticleSimulation::step()
 {
-	/*
-	auto& particles = m_target->m_particles;
-	for (auto& particle : particles)
-	{
-		particle.velocity += sim.dt * sim.gravity;
-	}
-
-	for (auto& particle : particles)
-	{
-		particle.prev_position = particle.position;
-		particle.position += particle.velocity * sim.dt;
-	}
-
-
-	doubleDensityRelaxation(particles);
-	resolveCollisions(particles);
-	for (auto& particle : particles)
-	{
-		particle.velocity = (particle.position - particle.prev_position) / sim.dt;
-	}
-	m_target->update();
-	*/
-
 	int blockSize;
 	glGetIntegerv(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, &blockSize);
 	size_t numBlocks = (blockSize + PARTICLE_COUNT - 1) / blockSize;
+
 	m_applyGravity.dispatch(numBlocks, 1, 1);
-	m_doubleDensityRelaxation.dispatch(numBlocks, 1, 1);
-	m_updateVelocity.dispatch(numBlocks, 1, 1);
+	//m_doubleDensityRelaxation.dispatch(numBlocks, 1, 1);
+	//m_updateVelocity.dispatch(numBlocks, 1, 1);
 }
 
 

@@ -84,6 +84,6 @@ void Window::windowResizeCallback(GLFWwindow* window, int width, int height)
 
 void Window::mouseMoveCallback(GLFWwindow* window, double xpos, double ypos)
 {
-    MouseMoveEvent e(xpos, ypos);
+    MouseMoveEvent e(xpos, ypos, width_, height_);
     EventManager::getInstance().triggerEvent(e);
 }

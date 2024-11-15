@@ -4,7 +4,7 @@
 #include <random>
 std::random_device rd;
 std::mt19937 gen(rd());
-std::uniform_real_distribution<float> position_dist(-POSITION_RANGE + 2.0f, POSITION_RANGE - 2.0f);
+std::uniform_real_distribution<float> position_dist(-POSITION_RANGE, POSITION_RANGE);
 std::uniform_real_distribution<float> velocity_dist(-1, 1);
 
 static std::vector<Particle> generateParticles()

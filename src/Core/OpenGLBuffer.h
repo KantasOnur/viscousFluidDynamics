@@ -16,14 +16,16 @@ class OpenGLBuffer : public GenericOpenGLBuffer
 private:
 	unsigned int m_id;
 	GLenum m_type;
+	size_t m_n;
 public:
 	OpenGLBuffer(GLenum type, T* data, const size_t& n, GLenum usage)
-		: m_type(type)
+		: m_type(type), m_n(n)
 	{
 		//assert(type == GL_TRANSFORM_FEEDBACK_BUFFER || type == GL_TRANSFORM_FEEDBACK_BUFFER || type = GL_UNIFORM_BUFFER || type = GL_SHADER_STORAGE_BUFFER);
 		glGenBuffers(1, &m_id); // generate buffer
 		glBindBuffer(type, m_id); // bind buffer to modify
 		glBufferData(type, sizeof(T) * n, data, usage); // write to buffer 
+		glBindBuffer(type, 0);
 	}
 	~OpenGLBuffer()
 	{
@@ -36,6 +38,12 @@ public:
 	}
 	void retrieveBuffer(const size_t& offset, const size_t& n, T* data) const
 	{
-		glGetNamedBufferSubData(m_id, offset, n, data);
+		glGetNamedBufferSubData(m_id, offset, n * sizeof(T), data);
+	}
+	void updateBuffer(T* data, GLenum usage)
+	{
+		glBindBuffer(m_type, m_id);
+		glBufferData(m_type, sizeof(T) * m_n, data, usage);
+		glBindBuffer(m_type, 0);
 	}
 };

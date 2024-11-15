@@ -16,6 +16,7 @@ private:
 		float k = 3.0f;
 		float nearK = 7.0f;
 		int particleCount = PARTICLE_COUNT;
+		int boxHeight = 2 * POSITION_RANGE;
 	};
 
 	struct BoundingBox
@@ -47,6 +48,9 @@ private:
 
 	OpenGLBuffer<BoundingBox> m_boxUniform;
 	OpenGLBuffer<Params> m_paramUniform;
+	OpenGLBuffer<int> m_cellIDs;
+	//OpenGLBuffer<int> m_startIndices;
+
 private:
 	void resolveCollisions(Particle* particles);
 	void doubleDensityRelaxation(Particle* particles);

@@ -28,7 +28,10 @@ class MouseMoveEvent : public Event
 {
 public:
 	const glm::vec2 position;
-	MouseMoveEvent(const float& x, const float& y) : position({x, y}) {};
+	const glm::vec2 screen;
+	MouseMoveEvent(const float& x, const float& y, const float& width, const float& height) 
+		: position({x, y}), screen(width, height) {};
+
 	EventType getEventType() const override { return EventType::MouseMove; };
 	static EventType getStaticEventType() { return EventType::MouseMove; };
 };
