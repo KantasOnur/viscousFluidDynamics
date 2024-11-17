@@ -11,6 +11,7 @@ struct Particle
 	glm::vec4 prev_position = glm::vec4(0.0f);
 	glm::vec4 next_position = glm::vec4(0.0f);
 	glm::vec4 velocity = glm::vec4(0.0f);
+	glm::vec4 cellID = glm::vec4(0.0f);
 };
 
 class ParticleSystem : public BaseSystem

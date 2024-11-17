@@ -176,6 +176,7 @@
     <None Include="src\Shaders\boundingBox.vert" />
     <None Include="src\Shaders\Compute\applyGravity.comp" />
     <None Include="src\Shaders\Compute\doubleDensityRelaxation.comp" />
+    <None Include="src\Shaders\Compute\resetGrid.comp" />
     <None Include="src\Shaders\Compute\updateVelocity.comp" />
     <None Include="src\Shaders\include\common.glsl" />
     <None Include="src\Shaders\interactionRadius.frag" />

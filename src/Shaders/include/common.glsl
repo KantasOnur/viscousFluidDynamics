@@ -4,7 +4,9 @@ struct Particle
     vec4 prev_position;
     vec4 next_position;
     vec4 velocity;
+    vec4 cellID; // Use .x for cellID, leave .yzw for future use or other data
 };
+
 
 struct BoundingBox
 {
@@ -25,6 +27,12 @@ struct Params
     int boxHeight;
 };
 
+struct Cell
+{
+    uint count;
+    uint id;
+};
+
 layout(std430, binding = 0) buffer ParticleBuffer {
     Particle particles[];
 };
@@ -39,7 +47,30 @@ layout(std140, binding = 2) uniform ParamsUniform
     Params sim;
 };
 
-layout(std430, binding = 3) buffer CellBuffer
+layout(std430, binding = 3) buffer Grid
 {
-    int cellIDs[];
+    uint grid[];
 };
+
+vec2 findCell(inout Particle p)
+{
+    float spacing = 2.0f * sim.h;
+    int x = int(floor(p.position.x / spacing));
+    int y = int(floor(p.position.y / spacing));
+
+    return vec2(x, y);
+}
+
+int hash(inout Particle p)
+{
+    vec2 cell_coords = findCell(p);
+    // psuedo-random, subtracting by a large negative number so the function doesnt return the same value for mirrored coords.
+    int h = (int(cell_coords.x * 30945845) ^ int(cell_coords.y * 345897)) - 23498239;
+    return abs(h) % sim.particleCount;
+}
+
+int hash(inout vec2 cell_coords)
+{
+    int h = (int(cell_coords.x * 30945845) ^ int(cell_coords.y * 345897)) - 23498239;
+    return abs(h) % sim.particleCount;
+}

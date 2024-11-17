@@ -11,10 +11,10 @@ private:
 	{
 		glm::vec4 gravity = { 0.0f, -9.81f, 0.0f, 0.0f };
 		float dt = 0.005f;
-		float h = 0.55f;
-		float restDensity = 40.0f;
-		float k = 3.0f;
-		float nearK = 7.0f;
+		float h = 0.35f;
+		float restDensity = 30.0f;
+		float k = 5.0f;
+		float nearK = 0.4f;
 		int particleCount = PARTICLE_COUNT;
 		int boxHeight = 2 * POSITION_RANGE;
 	};
@@ -41,14 +41,15 @@ private:
 	ParticleSystem* m_target;
 	Params sim;
 	BoundingBox m_box;
-
+	
+	ComputeShader m_resetGrid;
 	ComputeShader m_applyGravity;
 	ComputeShader m_updateVelocity;
 	ComputeShader m_doubleDensityRelaxation;
 
 	OpenGLBuffer<BoundingBox> m_boxUniform;
 	OpenGLBuffer<Params> m_paramUniform;
-	OpenGLBuffer<int> m_cellIDs;
+	OpenGLBuffer<size_t> m_grid;
 	//OpenGLBuffer<int> m_startIndices;
 
 private:

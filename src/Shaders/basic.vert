@@ -30,37 +30,41 @@ mat4 scale(float s)
     );
 }
 
-void test(int cellId)
+void test()
 {
-    int n_y = int(ceil(sim.boxHeight / (2 * sim.h)));
-    for (int y = -1; y <= 1; y++) // Iterate through row offsets
+    Particle querry_particle = particles[0]; 
+    int querry_cellID = int(querry_particle.cellID.x);
+    vColor = vec3(1.0, 0.0, 0.0);
+
+    for(int y = -1; y <= 1; y++)
     {
-        for (int x = -1; x <= 1; x++) // Iterate through column offsets
+        for(int x = -1; x <= 1; x++)
         {
-            int neighborCellId = y * n_y + x + cellId; // Calculate the neighbor cell ID
-            if (cellIDs[gl_InstanceID] == neighborCellId)
+            vec2 cell_coords = findCell(querry_particle) + vec2(x, y);
+            int neighborID = hash(cell_coords);
+            if(particles[gl_InstanceID].cellID.x == neighborID)
             {
-                vColor = vec3(0.0f, 1.0f, 0.0f); // Color neighbor cells
+                vColor = vec3(0.0f, 1.0f, 0.0f);
             }
         }
     }
-
-    if (cellIDs[gl_InstanceID] == cellId) // Check if the cell is the current cell
+    
+    if(particles[gl_InstanceID].cellID.x == querry_cellID)
     {
-        vColor = vec3(1.0f); // Color the current cell
+        vColor = vec3(1.0);
     }
 }
-
 
 void main()
 {
     //vColor = mix(vec3(0.0f, 0.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f), clamp(length(particles[gl_InstanceID].velocity), 0.0f, 10.0f) * 0.1f);
-    vColor = vec3(1.0f, 0.0f, 0.0f);
-
-    
-    test(0);
-
+    test();
 
     mat4 model =  translate(particles[gl_InstanceID].position.xyz) * scale(5.0f);
+    if(gl_InstanceID == 0)
+    {
+        model = model * scale(2.0f);
+        vColor = vec3(1.0f, 0.76f, 0.5f);
+    }
 	gl_Position = projectionMatrix * viewMatrix * model * vec4(vertexPosition, 1.0);
 }

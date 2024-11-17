@@ -4,17 +4,18 @@
 #include <iostream>
 
 ParticleSimulation::ParticleSimulation(ParticleSystem* target)
-	: m_target(target), 
+	: m_target(target),
+	m_resetGrid("resetGrid"),
 	m_applyGravity("applyGravity"),
 	m_updateVelocity("updateVelocity"),
 	m_doubleDensityRelaxation("doubleDensityRelaxation"),
 	m_boxUniform(GL_UNIFORM_BUFFER, &m_box, 1, GL_DYNAMIC_DRAW),
 	m_paramUniform(GL_UNIFORM_BUFFER, &sim, 1, GL_DYNAMIC_DRAW),
-	m_cellIDs(GL_SHADER_STORAGE_BUFFER, std::vector<int>(PARTICLE_COUNT).data(), PARTICLE_COUNT, GL_DYNAMIC_COPY)
+	m_grid(GL_SHADER_STORAGE_BUFFER, std::vector<size_t>(PARTICLE_COUNT).data(), PARTICLE_COUNT, GL_DYNAMIC_COPY)
 {
 	m_boxUniform.sendToGpu(1);
 	m_paramUniform.sendToGpu(2);
-	m_cellIDs.sendToGpu(3);
+	m_grid.sendToGpu(3);
 }
 
 void ParticleSimulation::step()
@@ -23,7 +24,21 @@ void ParticleSimulation::step()
 	glGetIntegerv(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, &blockSize);
 	size_t numBlocks = (blockSize + PARTICLE_COUNT - 1) / blockSize;
 
+	m_resetGrid.dispatch(numBlocks, 1, 1);
+
+	// apply gravity also builds the grid
 	m_applyGravity.dispatch(numBlocks, 1, 1);
+	m_doubleDensityRelaxation.dispatch(numBlocks, 1, 1);
+	m_updateVelocity.dispatch(numBlocks, 1, 1);
+	/*
+	std::vector<Particle> particles(PARTICLE_COUNT);
+	std::vector<size_t> grid(PARTICLE_COUNT);
+
+	m_target->m_particles.retrieveBuffer(0, PARTICLE_COUNT, particles.data());
+	m_grid.retrieveBuffer(0, PARTICLE_COUNT, grid.data());
+
+	std::cout << grid[particles[0].cellID.x] << std::endl;
+	*/
 	//m_doubleDensityRelaxation.dispatch(numBlocks, 1, 1);
 	//m_updateVelocity.dispatch(numBlocks, 1, 1);
 }
