@@ -140,3 +140,8 @@ void Shader::setInt(const std::string& name, const int& val)
 {
     glUniform1i(getUniformLocation(name), val);
 }
+
+void Shader::setUInt(const std::string& name, const unsigned int& val)
+{
+    glUniform1ui(getUniformLocation(name), val);
+}

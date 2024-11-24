@@ -10,11 +10,11 @@ private:
 	struct Params
 	{
 		glm::vec4 gravity = { 0.0f, -9.81f, 0.0f, 0.0f };
-		float dt = 0.005f;
-		float h = 0.35f;
-		float restDensity = 30.0f;
-		float k = 5.0f;
-		float nearK = 0.4f;
+		float dt = 0.01f;
+		float h = 0.65f;
+		float restDensity = 14.0f;
+		float k = 7.0f;
+		float nearK = 30.0f;
 		int particleCount = PARTICLE_COUNT;
 		int boxHeight = 2 * POSITION_RANGE;
 	};
@@ -46,15 +46,19 @@ private:
 	ComputeShader m_applyGravity;
 	ComputeShader m_updateVelocity;
 	ComputeShader m_doubleDensityRelaxation;
+	ComputeShader m_partialSort;
+	ComputeShader m_merge;
 
 	OpenGLBuffer<BoundingBox> m_boxUniform;
 	OpenGLBuffer<Params> m_paramUniform;
 	OpenGLBuffer<size_t> m_grid;
+	OpenGLBuffer<Particle> m_temp; // Used when sorting the particles
 	//OpenGLBuffer<int> m_startIndices;
 
 private:
 	void resolveCollisions(Particle* particles);
 	void doubleDensityRelaxation(Particle* particles);
+	void _sortParticles(const glm::vec3& grid);
 public:
 	ParticleSimulation(ParticleSystem* target);
 	void render(const Camera& camera) override;

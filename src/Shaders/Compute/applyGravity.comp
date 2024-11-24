@@ -6,8 +6,8 @@ layout (local_size_x = 1024, local_size_y = 1, local_size_z = 1) in;
 void calculateCellID(inout Particle p)
 {
     int cellID = hash(p);
-    p.cellID.x = cellID;
-    atomicAdd(grid[cellID.x], 1);
+    p.position.w = cellID;
+    //atomicAdd(grid[cellID.x], 1);
 }
 
 void main()
@@ -19,8 +19,8 @@ void main()
         Particle p = particles[gl_GlobalInvocationID.x];
 
         // Ensure 4th component is ignored
-        p.velocity = vec4(p.velocity.xyz, 0.0f);
-        p.position = vec4(p.position.xyz, 0.0f);
+       // p.velocity = vec4(p.velocity.xyz, 0.0f);
+       // p.position = vec4(p.position.xyz, 0.0f);
 
         // Apply gravity 
         p.velocity += sim.dt * sim.gravity;

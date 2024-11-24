@@ -9,27 +9,30 @@ ParticleSimulation::ParticleSimulation(ParticleSystem* target)
 	m_applyGravity("applyGravity"),
 	m_updateVelocity("updateVelocity"),
 	m_doubleDensityRelaxation("doubleDensityRelaxation"),
+	m_partialSort("partialBitonicSort"),
+	m_merge("bitonicMerge"),
 	m_boxUniform(GL_UNIFORM_BUFFER, &m_box, 1, GL_DYNAMIC_DRAW),
 	m_paramUniform(GL_UNIFORM_BUFFER, &sim, 1, GL_DYNAMIC_DRAW),
-	m_grid(GL_SHADER_STORAGE_BUFFER, std::vector<size_t>(PARTICLE_COUNT).data(), PARTICLE_COUNT, GL_DYNAMIC_COPY)
+	m_grid(GL_SHADER_STORAGE_BUFFER, std::vector<size_t>(PARTICLE_COUNT).data(), PARTICLE_COUNT, GL_DYNAMIC_COPY),
+	m_temp(GL_SHADER_STORAGE_BUFFER, std::vector<Particle>(PARTICLE_COUNT).data(), PARTICLE_COUNT, GL_DYNAMIC_COPY)
 {
 	m_boxUniform.sendToGpu(1);
 	m_paramUniform.sendToGpu(2);
 	m_grid.sendToGpu(3);
+	m_temp.sendToGpu(4);
 }
 
 void ParticleSimulation::step()
 {
-	int blockSize;
-	glGetIntegerv(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, &blockSize);
-	size_t numBlocks = (blockSize + PARTICLE_COUNT - 1) / blockSize;
-
-	m_resetGrid.dispatch(numBlocks, 1, 1);
+	const size_t threadsPerBlock = 1024;
+	const size_t numBlocks = (threadsPerBlock + PARTICLE_COUNT - 1) / threadsPerBlock;
 
 	// apply gravity also builds the grid
 	m_applyGravity.dispatch(numBlocks, 1, 1);
-	m_doubleDensityRelaxation.dispatch(numBlocks, 1, 1);
-	m_updateVelocity.dispatch(numBlocks, 1, 1);
+	_sortParticles({ numBlocks, 1, 1 });
+
+	//m_doubleDensityRelaxation.dispatch(numBlocks, 1, 1);
+	//m_updateVelocity.dispatch(numBlocks, 1, 1);
 	/*
 	std::vector<Particle> particles(PARTICLE_COUNT);
 	std::vector<size_t> grid(PARTICLE_COUNT);
@@ -137,5 +140,29 @@ void ParticleSimulation::resolveCollisions(Particle* particles)
 			}
 		}
 	}
+	*/
+}
+
+void ParticleSimulation::_sortParticles(const glm::vec3& grid)
+{
+	std::vector<Particle> particles(PARTICLE_COUNT);
+	m_partialSort.dispatch(grid.x, grid.y, grid.z);
+	for (unsigned int step = 1024; step <= PARTICLE_COUNT; step <<= 1)
+	{
+		for (unsigned int substep = step >> 1; substep > 0; substep >>= 1)
+		{
+			m_merge.setUInt("step", step);
+			m_merge.setUInt("substep", substep);
+			m_merge.dispatch(grid.x, grid.y, grid.z);
+		}
+	}
+	/*
+	m_target->m_particles.retrieveBuffer(0, PARTICLE_COUNT, particles.data());
+	for (int i = 0; i < PARTICLE_COUNT - 1; ++i)
+	{
+		assert(particles[i].position.w <= particles[i + 1].position.w);
+	} 
+	
+	std::cout << "here" << std::endl;
 	*/
 }

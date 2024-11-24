@@ -14,7 +14,7 @@ static std::vector<Particle> generateParticles()
 	{
 		particles[i].position = glm::vec4(position_dist(gen), position_dist(gen), -POSITION_RANGE, 0.0f);
 		particles[i].prev_position = particles[i].position;
-		//m_particles[i].velocity = glm::vec3(velocity_dist(gen), velocity_dist(gen), 0.0f);
+		//particles[i].velocity = glm::vec4(velocity_dist(gen), velocity_dist(gen), 0.0f, 0.0f);
 	}
 	return particles;
 }

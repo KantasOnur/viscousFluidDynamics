@@ -11,7 +11,7 @@ void doubleDensityRelaxation(inout Particle p)
     {
         if(gl_GlobalInvocationID.x != j)
         {
-            float weightedContribution = distance(p.position, particles[j].position) / sim.h;
+            float weightedContribution = distance(p.position.xyz, particles[j].position.xyz) / sim.h;
             if(weightedContribution < 1.0f)
             {
                 density += pow(1 - weightedContribution, 2.0f);
@@ -23,25 +23,25 @@ void doubleDensityRelaxation(inout Particle p)
 
     float pressure = sim.k * (density - sim.restDensity);
     float pressure_near = sim.nearK * density_near;
-    vec4 dx = vec4(0.0f);
-    vec4 displacement = vec4(0.0f);
+    vec3 dx = vec3(0.0f);
+    vec3 displacement = vec3(0.0f);
 
     for (int j = 0; j < sim.particleCount; j++)
     {
         if(gl_GlobalInvocationID.x != j)
         {
-            float weightedContribution = distance(p.position, particles[j].position) / sim.h;
+            float weightedContribution = distance(p.position.xyz, particles[j].position.xyz) / sim.h;
             if(weightedContribution < 1.0f)
             {
                 displacement = pow(sim.dt, 2.0f) *
 					        (pressure * (1 - weightedContribution) + pressure_near * pow(1 - weightedContribution, 2.0f)) * 
-                            normalize(particles[j].position - p.position);
+                            normalize(particles[j].position.xyz - p.position.xyz);
 
                 dx += -0.5f * displacement;
             }   
         }
     }
-    p.next_position = p.position + dx;
+    p.next_position.xyz = p.position.xyz + dx;
 }
 
 void main()
@@ -49,8 +49,8 @@ void main()
     if(gl_GlobalInvocationID.x < sim.particleCount)
     {
         Particle p = particles[gl_GlobalInvocationID.x];
-        p.velocity = vec4(p.velocity.xyz, 0.0f);
-        p.position = vec4(p.position.xyz, 0.0f);
+        //p.velocity = vec4(p.velocity.xyz, 0.0f);
+        //p.position = vec4(p.position.xyz, 0.0f);
 
         doubleDensityRelaxation(p);
 

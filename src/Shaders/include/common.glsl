@@ -1,10 +1,10 @@
 struct Particle
 {
-    vec4 position;
+    vec4 position; // 4th component of position is the cellID 
     vec4 prev_position;
     vec4 next_position;
     vec4 velocity;
-    vec4 cellID; // Use .x for cellID, leave .yzw for future use or other data
+    //vec4 cellID;
 };
 
 
@@ -50,6 +50,11 @@ layout(std140, binding = 2) uniform ParamsUniform
 layout(std430, binding = 3) buffer Grid
 {
     uint grid[];
+};
+
+layout(std430, binding = 4) buffer Temp // Used for sorting, since cant fit particles into shared memory
+{
+    Particle temp[];
 };
 
 vec2 findCell(inout Particle p)

@@ -33,7 +33,7 @@ mat4 scale(float s)
 void test()
 {
     Particle querry_particle = particles[0]; 
-    int querry_cellID = int(querry_particle.cellID.x);
+    int querry_cellID = int(querry_particle.position.w);
     vColor = vec3(1.0, 0.0, 0.0);
 
     for(int y = -1; y <= 1; y++)
@@ -42,14 +42,14 @@ void test()
         {
             vec2 cell_coords = findCell(querry_particle) + vec2(x, y);
             int neighborID = hash(cell_coords);
-            if(particles[gl_InstanceID].cellID.x == neighborID)
+            if(particles[gl_InstanceID].position.w == neighborID)
             {
                 vColor = vec3(0.0f, 1.0f, 0.0f);
             }
         }
     }
     
-    if(particles[gl_InstanceID].cellID.x == querry_cellID)
+    if(particles[gl_InstanceID].position.w == querry_cellID)
     {
         vColor = vec3(1.0);
     }

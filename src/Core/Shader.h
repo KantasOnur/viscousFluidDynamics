@@ -23,6 +23,7 @@ public:
     void setVec3f(const std::string& name, const glm::vec3& val);
     void setFloat1f(const std::string& name, const float& val);
     void setInt(const std::string& name, const int& val);
+    void setUInt(const std::string& name, const unsigned int& val);
 };
 
 
