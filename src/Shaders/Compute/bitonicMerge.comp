@@ -13,8 +13,8 @@ void main()
 	uint index = substep ^ th_id;
 	if(index > th_id && th_id < sim.particleCount)
 	{
-		if (((index & step) == 0 && particles[th_id].position.w > particles[index].position.w) ||
-			((index & step) != 0 && particles[th_id].position.w < particles[index].position.w))
+		if (((index & step) == 0 && particles[th_id].cellID.x > particles[index].cellID.x) ||
+			((index & step) != 0 && particles[th_id].cellID.x < particles[index].cellID.x))
 		{
 			Particle temp = particles[th_id];
             particles[th_id] = particles[index];

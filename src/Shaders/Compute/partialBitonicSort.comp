@@ -22,7 +22,7 @@ void swap(inout uint index)
 void bitonic_sort(inout uint chunk_offset, inout uint chunk_size, inout uint th_id, inout uint direction)
 {
     uint index;
-    chunk[gl_LocalInvocationID.x] = optimizedParticle(th_id, uint(particles[th_id].position.w));
+    chunk[gl_LocalInvocationID.x] = optimizedParticle(th_id, uint(particles[th_id].cellID.x));
     barrier();
     
     for (int step = 2; step <= chunk_size; step <<= 1)

@@ -10,9 +10,8 @@ Scene::Scene(const Window& window)
 
 void Scene::render()
 {
+    m_particleSim.step();
+    m_particleSim.render(*camera_);
 
     m_particleSys.render(*camera_);
-    m_particleSim.render(*camera_);
-    m_particleSim.step();
-
 }

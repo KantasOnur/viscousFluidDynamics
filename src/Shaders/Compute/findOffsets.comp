@@ -1,0 +1,16 @@
+#version 430
+#include <common>
+
+layout (local_size_x = 1024, local_size_y = 1, local_size_z = 1) in;
+
+void main()
+{
+    uint th_id = gl_GlobalInvocationID.x;
+
+    if (th_id >= sim.particleCount)
+        return;
+
+    int currentCellID = particles[th_id].cellID.x; 
+
+    atomicMin(startsAt[currentCellID], int(th_id));
+}

@@ -48,12 +48,13 @@ private:
 	ComputeShader m_doubleDensityRelaxation;
 	ComputeShader m_partialSort;
 	ComputeShader m_merge;
+	ComputeShader m_findOffsets;
 
 	OpenGLBuffer<BoundingBox> m_boxUniform;
 	OpenGLBuffer<Params> m_paramUniform;
 	OpenGLBuffer<size_t> m_grid;
 	OpenGLBuffer<Particle> m_temp; // Used when sorting the particles
-	//OpenGLBuffer<int> m_startIndices;
+	OpenGLBuffer<unsigned int> m_startsAt;
 
 private:
 	void resolveCollisions(Particle* particles);

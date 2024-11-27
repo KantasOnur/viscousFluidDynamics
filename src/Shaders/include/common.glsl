@@ -4,7 +4,7 @@ struct Particle
     vec4 prev_position;
     vec4 next_position;
     vec4 velocity;
-    //vec4 cellID;
+    ivec4 cellID;
 };
 
 
@@ -55,6 +55,11 @@ layout(std430, binding = 3) buffer Grid
 layout(std430, binding = 4) buffer Temp // Used for sorting, since cant fit particles into shared memory
 {
     Particle temp[];
+};
+
+layout(std430, binding = 5) buffer StartsAt
+{
+    uint startsAt[];
 };
 
 vec2 findCell(inout Particle p)

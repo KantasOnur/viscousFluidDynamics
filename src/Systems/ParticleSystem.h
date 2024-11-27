@@ -1,6 +1,6 @@
 #pragma once
 #include "BaseSystem.h"
-#define PARTICLE_COUNT 1 << 10
+#define PARTICLE_COUNT (1 << 13)
 #define POSITION_RANGE 10.0f
 #include "../Core/InstancedMesh.h"
 #include "../Core/OpenGLBuffer.h"
@@ -11,7 +11,7 @@ struct Particle
 	glm::vec4 prev_position = glm::vec4(0.0f);
 	glm::vec4 next_position = glm::vec4(0.0f);
 	glm::vec4 velocity = glm::vec4(0.0f);
-	//glm::vec4 cellID = glm::vec4(0.0f);
+	glm::ivec4 cellID = glm::vec4(0.0f);
 };
 
 class ParticleSystem : public BaseSystem

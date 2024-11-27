@@ -6,7 +6,7 @@ layout (local_size_x = 1024, local_size_y = 1, local_size_z = 1) in;
 void calculateCellID(inout Particle p)
 {
     int cellID = hash(p);
-    p.position.w = cellID;
+    p.cellID.x = cellID;
     //atomicAdd(grid[cellID.x], 1);
 }
 
@@ -26,11 +26,12 @@ void main()
         p.velocity += sim.dt * sim.gravity;
 
         // Move to predicted position
-        p.prev_position = p.position;
-        p.position += p.velocity * sim.dt;
+        p.prev_position.xyz = p.position.xyz;
+        p.position.xyz += p.velocity.xyz * sim.dt;
         
 
         calculateCellID(p);
         particles[gl_GlobalInvocationID.x] = p;
+        startsAt[gl_GlobalInvocationID.x] = 0xFFFFFFFF; // Reset the offsets
     }
 }

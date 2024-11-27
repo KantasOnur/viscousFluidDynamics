@@ -125,5 +125,6 @@
     <None Include="src\Shaders\Compute\resetGrid.comp" />
     <None Include="src\Shaders\Compute\partialBitonicSort.comp" />
     <None Include="src\Shaders\Compute\bitonicMerge.comp" />
+    <None Include="src\Shaders\Compute\findOffsets.comp" />
   </ItemGroup>
 </Project>
