@@ -41,7 +41,7 @@ Window::Window(const int& width, const int& height)
     std::cout << "Renderer: " << renderer << std::endl;
     std::cout << "OpenGL Version: " << version << std::endl;
 
-    glfwSwapInterval(1); // set vsync
+    //glfwSwapInterval(1); // set vsync
 }
 
 Window::~Window()
@@ -54,6 +54,9 @@ void Window::update() const
 {
     glfwSwapBuffers(window_);
     glfwPollEvents();
+
+    WindowUpdateEvent e(window_);
+    EventManager::getInstance().triggerEvent(e);
 }
 
 double Window::getTime()
@@ -84,6 +87,6 @@ void Window::windowResizeCallback(GLFWwindow* window, int width, int height)
 
 void Window::mouseMoveCallback(GLFWwindow* window, double xpos, double ypos)
 {
-    MouseMoveEvent e(xpos, ypos, width_, height_);
+    MouseMoveEvent e(xpos, ypos, width_, height_, window);
     EventManager::getInstance().triggerEvent(e);
 }

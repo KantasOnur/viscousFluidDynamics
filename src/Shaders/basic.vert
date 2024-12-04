@@ -57,14 +57,16 @@ void test()
 
 void main()
 {
-    //vColor = mix(vec3(0.0f, 0.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f), clamp(length(particles[gl_InstanceID].velocity), 0.0f, 10.0f) * 0.1f);
-    test();
-
+    vColor = mix(vec3(0.0f, 0.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f), clamp(length(particles[gl_InstanceID].velocity), 0.0f, 10.0f) * 0.1f);
+    //test();
+    
     mat4 model =  translate(particles[gl_InstanceID].position.xyz) * scale(5.0f);
+    /*
     if(gl_InstanceID == 0)
     {
         model = model * scale(2.0f);
         vColor = vec3(1.0f, 0.76f, 0.5f);
     }
+    */
 	gl_Position = projectionMatrix * viewMatrix * model * vec4(vertexPosition, 1.0);
 }

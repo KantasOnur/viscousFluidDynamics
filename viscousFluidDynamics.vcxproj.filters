@@ -114,8 +114,6 @@
   <ItemGroup>
     <None Include="src\Shaders\basic.vert" />
     <None Include="src\Shaders\basic.frag" />
-    <None Include="src\Shaders\interactionRadius.vert" />
-    <None Include="src\Shaders\interactionRadius.frag" />
     <None Include="src\Shaders\boundingBox.vert" />
     <None Include="src\Shaders\boundingBox.frag" />
     <None Include="src\Shaders\Compute\applyGravity.comp" />

@@ -14,7 +14,7 @@ void resolveCollisions(inout Particle p)
             p.position.xyz += -dirDotN * normal;
             p.prev_position.xyz = p.position.xyz;
             //p.position += normal * 0.015f;
-            //p.position.xyz += reflect(p.velocity.xyz, normal) * sim.dt;
+            p.position.xyz += 0.6 * -p.velocity.xyz * sim.dt;
         }
     }
 }

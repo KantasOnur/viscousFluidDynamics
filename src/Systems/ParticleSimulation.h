@@ -10,11 +10,11 @@ private:
 	struct Params
 	{
 		glm::vec4 gravity = { 0.0f, -9.81f, 0.0f, 0.0f };
-		float dt = 0.01f;
-		float h = 0.65f;
-		float restDensity = 14.0f;
-		float k = 7.0f;
-		float nearK = 30.0f;
+		float dt = 0.005f;
+		float h = 0.35f;
+		float restDensity = 10.0f;
+		float k = 4.0f;
+		float nearK = 3.0f;
 		int particleCount = PARTICLE_COUNT;
 		int boxHeight = 2 * POSITION_RANGE;
 	};
