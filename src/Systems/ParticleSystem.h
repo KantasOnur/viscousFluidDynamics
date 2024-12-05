@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseSystem.h"
 #define PARTICLE_COUNT (1 << 16)
-#define POSITION_RANGE 20.0f
+#define POSITION_RANGE 10.0f
 #include "../Core/InstancedMesh.h"
 #include "../Core/OpenGLBuffer.h"
 

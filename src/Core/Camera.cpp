@@ -39,7 +39,7 @@ void Camera::_updateViewMatrix()
 
 void Camera::_rotateCamera(const MouseMoveEvent& event)
 {
-    if (!m_rotateCamera) return;
+    if (!m_inRotation) return;
 
     glm::vec2 mousePos = event.mousePos;
     glm::vec2 deltaPos = mousePos - glm::vec2(event.width / 2, event.height / 2);
@@ -72,18 +72,21 @@ void Camera::_update(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_D)) dx -= m_left;
     if (glfwGetKey(window, GLFW_KEY_SPACE)) dx += up_;
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) dx -= up_;
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) && !m_rotateCamera)
-    {
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-        m_rotateCamera = true;
-    }
+
+    // escape for camera mode
     if (glfwGetKey(window, GLFW_KEY_ESCAPE))
     {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        m_inRotation = true;
+    }
+
+    // c for debug mode
+    if (glfwGetKey(window, GLFW_KEY_C) && m_inRotation)
+    {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        m_rotateCamera = false;
+        m_inRotation = false;
     }
 
     if (dx != glm::vec3(0.0f, 0.0f, 0.0f)) position_ += glm::normalize(dx);
     _updateViewMatrix();
-
 }

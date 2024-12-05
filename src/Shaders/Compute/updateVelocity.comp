@@ -5,7 +5,7 @@ layout(local_size_x = 1024, local_size_y = 1, local_size_z = 1) in;
 
 void resolveCollisions(inout Particle p)
 {
-    for (int j = 0; j < 4; ++j)
+    for (int j = 0; j < 6; ++j)
     {
         vec3 normal = box.normals[j].xyz;
         float dirDotN = dot(p.position.xyz - box.bounds[j].xyz, normal.xyz);

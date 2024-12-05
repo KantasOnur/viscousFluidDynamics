@@ -4,7 +4,7 @@
 #include <random>
 std::random_device rd;
 std::mt19937 gen(rd());
-std::uniform_real_distribution<float> position_dist(-POSITION_RANGE + 2, POSITION_RANGE - 2);
+std::uniform_real_distribution<float> position_dist(-POSITION_RANGE + 5, POSITION_RANGE - 5);
 std::uniform_real_distribution<float> velocity_dist(-1, 1);
 
 static std::vector<Particle> generateParticles()
@@ -12,7 +12,7 @@ static std::vector<Particle> generateParticles()
 	std::vector<Particle> particles(PARTICLE_COUNT);
 	for (int i = 0; i < PARTICLE_COUNT; ++i)
 	{
-		particles[i].position = glm::vec4(position_dist(gen), position_dist(gen), -POSITION_RANGE, 0.0f);
+		particles[i].position = glm::vec4(position_dist(gen), position_dist(gen), position_dist(gen), 0.0f);
 		particles[i].prev_position = particles[i].position;
 		//particles[i].velocity = glm::vec4(velocity_dist(gen), velocity_dist(gen), 0.0f, 0.0f);
 	}

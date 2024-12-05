@@ -16,7 +16,7 @@ class OpenGLBuffer : public GenericOpenGLBuffer
 private:
 	unsigned int m_id;
 	GLenum m_type;
-	size_t m_n;
+	size_t m_n; // num elements
 public:
 	OpenGLBuffer(GLenum type, T* data, const size_t& n, GLenum usage)
 		: m_type(type), m_n(n)
@@ -26,6 +26,7 @@ public:
 		glBindBuffer(type, m_id); // bind buffer to modify
 		glBufferData(type, sizeof(T) * n, data, usage); // write to buffer 
 		glBindBuffer(type, 0);
+		m_n = n;
 	}
 	~OpenGLBuffer()
 	{
@@ -40,10 +41,15 @@ public:
 	{
 		glGetNamedBufferSubData(m_id, offset, n * sizeof(T), data);
 	}
-	void updateBuffer(T* data, GLenum usage)
+	void updateBuffer(T* data)
 	{
+		glBindBuffer(m_type, m_id);
+		glBufferSubData(m_type, 0, sizeof(T) * m_n, data);
+		glBindBuffer(0, m_id);
+		/*
 		glBindBuffer(m_type, m_id);
 		glBufferData(m_type, sizeof(T) * m_n, data, usage);
 		glBindBuffer(m_type, 0);
+		*/
 	}
 };

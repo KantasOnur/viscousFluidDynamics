@@ -36,6 +36,18 @@ void ParticleSimulation::step()
 
 	m_doubleDensityRelaxation.dispatch(numBlocks, 1, 1);
 	m_updateVelocity.dispatch(numBlocks, 1, 1);
+
+	ImGui::Begin("Fluid Parameters");
+	ImGui::SliderFloat3("Gravity", reinterpret_cast<float*>(&sim.gravity), -10, 10);
+	ImGui::SliderFloat("Time Step", &sim.dt, 0.001f, 0.01f);
+	ImGui::SliderFloat("Interaction Radius", &sim.h, 0.01f, 1.0f);
+	ImGui::SliderFloat("Rest Density", &sim.restDensity, 0.0f, 40.0f);
+	ImGui::SliderFloat("Pressure", &sim.k, 1.0f, 10.0f);
+	ImGui::SliderFloat("Surface Tension", &sim.nearK, 0.0f, 10.0f);
+	m_paramUniform.updateBuffer(&sim);
+	ImGui::End();
+
+
 	/*
 	std::vector<Particle> particles(PARTICLE_COUNT);
 	std::vector<size_t> grid(PARTICLE_COUNT);

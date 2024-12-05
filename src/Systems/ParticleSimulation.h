@@ -21,19 +21,23 @@ private:
 
 	struct BoundingBox
 	{
-		glm::vec4 bounds[4] =
-		{																// Vertices		// Bounding planes
-			{-POSITION_RANGE,  POSITION_RANGE, -POSITION_RANGE, 0.0f},	// Top left		// Left plane
-			{-POSITION_RANGE, -POSITION_RANGE, -POSITION_RANGE, 0.0f},	// Bottom left	// Bottom plane
-			{POSITION_RANGE, POSITION_RANGE, -POSITION_RANGE, 0.0f},	// Top right	// Top plane
-			{POSITION_RANGE, -POSITION_RANGE, -POSITION_RANGE, 0.0f}	// Bottom right	// Right plane
+		glm::vec4 bounds[6] =
+		{																
+			{-POSITION_RANGE,  0.0f, 0.0f, 0.0f},	// Left plane
+			{0.0f, -POSITION_RANGE, 0.0f, 0.0f},	// Bottom plane
+			{0.0f, POSITION_RANGE, 0.0f, 0.0f},		// Top plane
+			{POSITION_RANGE, 0.0f, 0.0f, 0.0f},		// Right plane
+			{0.0f, 0.0f, POSITION_RANGE, 0.0f},		// Front plane
+			{0.0f, 0.0f, -POSITION_RANGE, 0.0f}		// Back plane
 		};
-		glm::vec4 normals[4]
+		glm::vec4 normals[6]
 		{
 			{1.0f, 0.0f, 0.0f, 0.0f},
 			{0.0f, 1.0f, 0.0f, 0.0f},
 			{0.0f, -1.0f, 0.0f, 0.0f},
-			{-1.0f, 0.0f, 0.0f, 0.0f}
+			{-1.0f, 0.0f, 0.0f, 0.0f},
+			{0.0f, 0.0f, -1.0f, 0.0f},
+			{0.0f, 0.0f, 1.0f, 0.0f}
 		};
 	};
 private:
@@ -70,13 +74,42 @@ private:
 	
 	std::vector<Vertex> m_vertices =
 	{
-		m_box.bounds[0],
-		m_box.bounds[1],
-		m_box.bounds[2],
-		m_box.bounds[3]
+		{-POSITION_RANGE, -POSITION_RANGE, -POSITION_RANGE}, // 0: Bottom-left-back
+		{ POSITION_RANGE, -POSITION_RANGE, -POSITION_RANGE}, // 1: Bottom-right-back
+		{-POSITION_RANGE,  POSITION_RANGE, -POSITION_RANGE}, // 2: Top-left-back
+		{ POSITION_RANGE,  POSITION_RANGE, -POSITION_RANGE}, // 3: Top-right-back
+		{-POSITION_RANGE, -POSITION_RANGE,  POSITION_RANGE}, // 4: Bottom-left-front
+		{ POSITION_RANGE, -POSITION_RANGE,  POSITION_RANGE}, // 5: Bottom-right-front
+		{-POSITION_RANGE,  POSITION_RANGE,  POSITION_RANGE}, // 6: Top-left-front
+		{ POSITION_RANGE,  POSITION_RANGE,  POSITION_RANGE}  // 7: Top-right-front
 	};
 	
-	std::vector<Index> m_indices = { 0, 1, 2, 2, 3, 1 };
+	std::vector<Index> m_indices = 
+	{ 
+		// Back face
+		0, 1, 2,  // Triangle 1
+		1, 3, 2,  // Triangle 2
+
+		// Front face
+		4, 6, 5,  // Triangle 1
+		5, 6, 7,  // Triangle 2
+
+		// Left face
+		0, 2, 4,  // Triangle 1
+		4, 2, 6,  // Triangle 2
+
+		// Right face
+		1, 5, 3,  // Triangle 1
+		3, 5, 7,  // Triangle 2
+
+		// Bottom face
+		0, 4, 1,  // Triangle 1
+		1, 4, 5,  // Triangle 2
+
+		// Top face
+		2, 3, 6,  // Triangle 1
+		3, 7, 6   // Triangle 2
+	};
 	Mesh m_boundingBoxMesh = Mesh(m_vertices, m_indices, "boundingBox");
 };
 

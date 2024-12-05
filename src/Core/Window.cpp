@@ -42,19 +42,47 @@ Window::Window(const int& width, const int& height)
     std::cout << "OpenGL Version: " << version << std::endl;
 
     //glfwSwapInterval(1); // set vsync
+    
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
+
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(window_, true);
+    ImGui_ImplOpenGL3_Init("#version 430");
+    
 }
 
 Window::~Window()
 {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
     glfwDestroyWindow(window_);
     glfwTerminate();
 }
 
 void Window::update() const
 {
+    /*
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+    
+    ImGui::Begin("yoyo");
+    ImGui::Text("bap");
+    ImGui::End();
+    
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    */
+
     glfwSwapBuffers(window_);
     glfwPollEvents();
-
+    
+    
     WindowUpdateEvent e(window_);
     EventManager::getInstance().triggerEvent(e);
 }
@@ -80,6 +108,8 @@ bool Window::isOpen() const
 
 void Window::windowResizeCallback(GLFWwindow* window, int width, int height)
 {
+    width_ = width;
+    height_ = height;
     glViewport(0, 0, width, height);
     WindowResizeEvent e(width, height);
     EventManager::getInstance().triggerEvent(e);

@@ -10,8 +10,8 @@ struct Particle
 
 struct BoundingBox
 {
-    vec4 bounds[4];
-    vec4 normals[4];
+    vec4 bounds[6];
+    vec4 normals[6];
 };
 
 struct Params
@@ -67,7 +67,6 @@ vec2 findCell(inout Particle p)
     float spacing = 2.0f * sim.h;
     int x = int(floor(p.position.x / spacing));
     int y = int(floor(p.position.y / spacing));
-
     return vec2(x, y);
 }
 
