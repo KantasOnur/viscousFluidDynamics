@@ -7,58 +7,67 @@ void doubleDensityRelaxation(inout Particle p)
 {
     float density = 0.0f;
     float density_near = 0.0f;
-
-    for(int y = -1; y <= 1; y++)
+       
+    for(int z = -1; z <= 1; z++)
     {
-        for(int x = -1; x <= 1; x++)
+        for(int y = -1; y <= 1; y++)
         {
-            vec2 cellCoords = findCell(p) + vec2(x, y);
-            int cellID = hash(cellCoords);
-            uint start = startsAt[cellID];
-
-            for(uint j = start; j < sim.particleCount && particles[j].cellID.x == cellID; j++)
+            for(int x = -1; x <= 1; x++)
             {
-                float weightedContribution = distance(p.position.xyz, particles[j].position.xyz) / sim.h;
-                if(weightedContribution < 1.0f && gl_GlobalInvocationID.x != j)
+                vec3 cell_coords = findCell(p) + vec3(x, y, z);
+                int cellID = hash(cell_coords);
+                uint start = startsAt[cellID];
+                
+                for(uint j = start; j < sim.particleCount && particles[j].cellID.x == cellID; j++)
                 {
-                    density += pow(1 - weightedContribution, 2.0f);
-                    density_near += pow(1 - weightedContribution, 3.0f);
-                }            
+                    float weightedContribution = distance(p.position.xyz, particles[j].position.xyz) / sim.h;
+                    if(weightedContribution < 1.0f && gl_GlobalInvocationID.x != j)
+                    {
+                        density += pow(1 - weightedContribution, 2.0f);
+                        density_near += pow(1 - weightedContribution, 3.0f);
+                    }            
+                }
+                
             }
         }
     }
-
+    
+    
     float pressure = sim.k * (density - sim.restDensity);
     float pressure_near = sim.nearK * density_near;
     vec3 dx = vec3(0.0f);
     vec3 displacement = vec3(0.0f);
-
-    for(int y = -1; y <= 1; y++)
+    
+    for(int z = -1; z <= 1; z++)
     {
-        for(int x = -1; x <= 1; x++)
+        for(int y = -1; y <= 1; y++)
         {
-            vec2 cellCoords = findCell(p) + vec2(x, y);
-            int cellID = hash(cellCoords);
-            uint start = startsAt[cellID];
-            for (uint j = start; j < sim.particleCount && particles[j].cellID.x == cellID; j++)
+            for(int x = -1; x <= 1; x++)
             {
-                if(gl_GlobalInvocationID.x != j)
+                vec3 cell_coords = findCell(p) + vec3(x, y, z);
+                int cellID = hash(cell_coords);
+                uint start = startsAt[cellID];
+                
+                for(uint j = start; j < sim.particleCount && particles[j].cellID.x == cellID; j++)
                 {
-                    float weightedContribution = distance(p.position.xyz, particles[j].position.xyz) / sim.h;
-                    if(weightedContribution < 1.0f)
-                    {
-                        displacement = pow(sim.dt, 2.0f) *
-					                (pressure * (1 - weightedContribution) + pressure_near * pow(1 - weightedContribution, 2.0f)) * 
-                                    normalize(particles[j].position.xyz - p.position.xyz);
+                    
+                        float weightedContribution = distance(p.position.xyz, particles[j].position.xyz) / sim.h;
+                        if(weightedContribution < 1.0f &&  gl_GlobalInvocationID.x != j)
+                        {
+                            displacement = pow(sim.dt, 2.0f) *
+					                    (pressure * (1 - weightedContribution) + pressure_near * pow(1 - weightedContribution, 2.0f)) * 
+                                        normalize(particles[j].position.xyz - p.position.xyz);
 
-                        dx += -0.5f * displacement;
-                    }   
+                            dx += -0.5f * displacement;
+                        }   
                 }
+                
             }
         }
     }
-
+    
     p.next_position.xyz = p.position.xyz + dx;
+    
 }
 
 void main()

@@ -30,24 +30,29 @@ mat4 scale(float s)
     );
 }
 
+
 void test()
 {
     Particle querry_particle = particles[0]; 
     int querry_cellID = querry_particle.cellID.x;
     vColor = vec3(1.0, 0.0, 0.0);
 
-    for(int y = -1; y <= 1; y++)
+    for(int z = -1; z <= 1; z++)
     {
-        for(int x = -1; x <= 1; x++)
+        for(int y = -1; y <= 1; y++)
         {
-            vec2 cell_coords = findCell(querry_particle) + vec2(x, y);
-            int neighborID = hash(cell_coords);
-            if(particles[gl_InstanceID].cellID.x == neighborID)
+            for(int x = -1; x <= 1; x++)
             {
-                vColor = vec3(0.0f, 1.0f, 0.0f);
+                vec3 cell_coords = findCell(querry_particle) + vec3(x, y, z);
+                int neighborID = hash(cell_coords);
+                if(particles[gl_InstanceID].cellID.x == neighborID)
+                {
+                    vColor = vec3(0.0f, 1.0f, 0.0f);
+                }
             }
         }
     }
+    
     
     if(particles[gl_InstanceID].cellID.x == querry_cellID)
     {
@@ -61,6 +66,7 @@ void main()
     //test();
     
     mat4 model =  translate(particles[gl_InstanceID].position.xyz) * scale(5.0f);
+    
     /*
     if(gl_InstanceID == 0)
     {
