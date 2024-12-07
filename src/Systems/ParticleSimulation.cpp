@@ -37,6 +37,7 @@ void ParticleSimulation::step()
 	m_doubleDensityRelaxation.dispatch(numBlocks, 1, 1);
 	m_updateVelocity.dispatch(numBlocks, 1, 1);
 
+	ImGui::SetNextWindowSize(ImVec2(600, 400));
 	ImGui::Begin("Fluid Parameters");
 	ImGui::SliderFloat3("Gravity", reinterpret_cast<float*>(&sim.gravity), -10, 10);
 	ImGui::SliderFloat("Time Step", &sim.dt, 0.001f, 0.01f);
@@ -45,6 +46,12 @@ void ParticleSimulation::step()
 	ImGui::SliderFloat("Pressure", &sim.k, 1.0f, 10.0f);
 	ImGui::SliderFloat("Surface Tension", &sim.nearK, 0.0f, 10.0f);
 	m_paramUniform.updateBuffer(&sim);
+	ImGui::End();
+
+	ImGui::Begin("Box parameters");
+	ImGui::SliderFloat3("Scale", reinterpret_cast<float*>(&m_box.scale), 0.000001f, 1.0f);
+	ImGui::SliderFloat3("Rotation", reinterpret_cast<float*>(&m_box.rotation), 0.0f, 3.14159f);
+	m_boxUniform.updateBuffer(&m_box);
 	ImGui::End();
 
 

@@ -197,6 +197,7 @@
     <None Include="src\Shaders\Compute\resetGrid.comp" />
     <None Include="src\Shaders\Compute\updateVelocity.comp" />
     <None Include="src\Shaders\include\common.glsl" />
+    <None Include="src\Shaders\include\matrixTransformations.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

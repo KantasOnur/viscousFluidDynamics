@@ -12,6 +12,8 @@ struct BoundingBox
 {
     vec4 bounds[6];
     vec4 normals[6];
+    vec4 scale;
+    vec4 rotation;
 };
 
 struct Params

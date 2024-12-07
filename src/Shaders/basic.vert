@@ -1,5 +1,6 @@
 #version 430 core
 #include <common>
+#include <matrixTransformations>
 
 layout (location = 0) in vec3 vertexPosition;
 layout (location = 1) in vec3 instancePosition;
@@ -9,26 +10,6 @@ uniform mat4 viewMatrix;
 
 out vec3 vColor;
 
-mat4 translate(vec3 t)
-{
-    // Column major for some reason??????
-    return mat4(
-        vec4(1.0, 0.0, 0.0, 0.0),
-        vec4(0.0, 1.0, 0.0, 0.0),
-        vec4(0.0, 0.0, 1.0, 0.0),
-        vec4(t, 1.0)
-   );
-}
-
-mat4 scale(float s)
-{
-    return mat4(
-        s, 0.0,     0.0,     0.0,
-        0.0, s, 0.0,     0.0,
-        0.0,     0.0,     s, 0.0,
-        0.0,     0.0,     0.0,     1.0
-    );
-}
 
 
 void test()
