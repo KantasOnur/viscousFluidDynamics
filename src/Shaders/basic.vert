@@ -39,6 +39,11 @@ void test()
     {
         vColor = vec3(1.0);
     }
+
+    if(distance(particles[gl_InstanceID].position.xyz, querry_particle.position.xyz) < sim.h)
+    {
+        vColor = vec3(1.0, 0.0f, 1.0f);
+    }
 }
 
 void main()

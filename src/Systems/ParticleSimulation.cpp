@@ -33,7 +33,6 @@ void ParticleSimulation::step()
 	// apply gravity also builds the grid
 	m_applyGravity.dispatch(numBlocks, 1, 1);
 	_sortParticles({ numBlocks, 1, 1 });
-
 	m_doubleDensityRelaxation.dispatch(numBlocks, 1, 1);
 	m_updateVelocity.dispatch(numBlocks, 1, 1);
 
@@ -43,7 +42,7 @@ void ParticleSimulation::step()
 	ImGui::SliderFloat("Time Step", &sim.dt, 0.001f, 0.01f);
 	ImGui::SliderFloat("Interaction Radius", &sim.h, 0.01f, 1.0f);
 	ImGui::SliderFloat("Rest Density", &sim.restDensity, 0.0f, 40.0f);
-	ImGui::SliderFloat("Pressure", &sim.k, 1.0f, 10.0f);
+	ImGui::SliderFloat("Pressure", &sim.k, 0.1f, 10.0f);
 	ImGui::SliderFloat("Surface Tension", &sim.nearK, 0.0f, 10.0f);
 	m_paramUniform.updateBuffer(&sim);
 	ImGui::End();

@@ -58,7 +58,7 @@ void doubleDensityRelaxation(inout Particle p)
 					                    (pressure * (1 - weightedContribution) + pressure_near * pow(1 - weightedContribution, 2.0f)) * 
                                         normalize(particles[j].position.xyz - p.position.xyz);
 
-                            dx += -0.5f * displacement;
+                            dx -= displacement;
                         }   
                 }
                 

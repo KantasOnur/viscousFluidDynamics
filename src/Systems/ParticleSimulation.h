@@ -11,10 +11,10 @@ private:
 	{
 		glm::vec4 gravity = { 0.0f, -9.81f, 0.0f, 0.0f };
 		float dt = 0.01f;
-		float h = 0.565f;
-		float restDensity = 11.0f;
-		float k = 7.8f;
-		float nearK = 3.0f;
+		float h = 0.446f;
+		float restDensity = 29.717f;
+		float k = 0.1f;
+		float nearK = 10.0f;
 		int particleCount = PARTICLE_COUNT;
 		int boxHeight = 2 * POSITION_RANGE;
 	};
