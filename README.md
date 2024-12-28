@@ -22,3 +22,7 @@ A uniform grid is used to minimize unnecessary pairwise computations. Each parti
 https://github.com/user-attachments/assets/c07ef396-1b01-4bfb-9cb5-778657b990ec
 
 The video showcases 65,536 particles running at a stable 100 FPS on a GTX 1080 GPU, demonstrating the efficiency of the grid-based parallel approach and the kernel dispatch strategy.
+
+# References
+http://www.ligum.umontreal.ca/Clavet-2005-PVFS/pvfs.pdf <br>
+https://developer.download.nvidia.com/assets/cuda/files/particles.pdf
