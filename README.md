@@ -2,11 +2,12 @@
 
 This project is a GPU-based implementation of the paper Particle-Based Viscoelastic Fluid Simulation. It harnesses modern GPU computing capabilities to efficiently simulate large numbers of fluid particles with viscoelastic properties in real time.
 # Dependencies
+These libraries handle the user interface, windowing, OpenGL extensions, and math operations needed for the simulation.
+
 - ImGui
 - GLFW
 - glew
-- glm
-These libraries handle the user interface, windowing, OpenGL extensions, and math operations needed for the simulation.
+- glm 
 
 # How it works
 1. Initialization <br> Each particle is assigned an initial velocity, then gravity is applied as a global force. 
