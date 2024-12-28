@@ -5,7 +5,6 @@
 
 ParticleSimulation::ParticleSimulation(ParticleSystem* target)
 	: m_target(target),
-	m_resetGrid("resetGrid"),
 	m_applyGravity("applyGravity"),
 	m_updateVelocity("updateVelocity"),
 	m_doubleDensityRelaxation("doubleDensityRelaxation"),
@@ -53,18 +52,6 @@ void ParticleSimulation::step()
 	m_boxUniform.updateBuffer(&m_box);
 	ImGui::End();
 
-
-	/*
-	std::vector<Particle> particles(PARTICLE_COUNT);
-	std::vector<size_t> grid(PARTICLE_COUNT);
-
-	m_target->m_particles.retrieveBuffer(0, PARTICLE_COUNT, particles.data());
-	m_grid.retrieveBuffer(0, PARTICLE_COUNT, grid.data());
-
-	std::cout << grid[particles[0].cellID.x] << std::endl;
-	*/
-	//m_doubleDensityRelaxation.dispatch(numBlocks, 1, 1);
-	//m_updateVelocity.dispatch(numBlocks, 1, 1);
 }
 
 
@@ -91,27 +78,4 @@ void ParticleSimulation::_sortParticles(const glm::vec3& grid)
 		}
 	}
 	m_findOffsets.dispatch(grid.x, grid.y, grid.z);
-	/*
-	m_startsAt.retrieveBuffer(0, PARTICLE_COUNT, startsAt.data());
-	m_target->m_particles.retrieveBuffer(0, PARTICLE_COUNT, particles.data());
-	
-	for (int i = 0; i < PARTICLE_COUNT - 1; ++i)
-	{
-		assert(particles[i].cellID.x <= particles[i + 1].cellID.x);
-	}
-	
-	for (int i = 0; i < PARTICLE_COUNT; ++i)
-	{
-		std::cout << particles[i].cellID.x << " ";
-	}
-	
-	std::cout << std::endl << "--------------------" << std::endl;
-	
-
-	for (int i = 0; i < PARTICLE_COUNT; ++i)
-	{
-		std::cout << startsAt[i] << " ";
-	}
-	std::cout << std::endl;
-	*/
 }

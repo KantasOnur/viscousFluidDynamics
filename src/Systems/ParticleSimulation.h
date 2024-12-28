@@ -48,7 +48,6 @@ private:
 	Params sim;
 	BoundingBox m_box;
 	
-	ComputeShader m_resetGrid;
 	ComputeShader m_applyGravity;
 	ComputeShader m_updateVelocity;
 	ComputeShader m_doubleDensityRelaxation;
@@ -63,8 +62,6 @@ private:
 	OpenGLBuffer<unsigned int> m_startsAt;
 
 private:
-	void resolveCollisions(Particle* particles);
-	void doubleDensityRelaxation(Particle* particles);
 	void _sortParticles(const glm::vec3& grid);
 public:
 	ParticleSimulation(ParticleSystem* target);
